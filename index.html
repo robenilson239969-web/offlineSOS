@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ESP32 + LoRa (RFM95) — Guia resumido</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>OfflineSOS: Comunicação offline entre usuários em situações de emergências ou isolamento.</h1>
+   </div>
+  </header>
+
+  <main class="container">
+    <section id="intro">
+      <h2>Introdução</h2>
+      <p>LoRa é uma tecnologia de rádio de baixa largura de banda que permite comunicações longas com baixo consumo de energia — ideal para sensores remotos e aplicações IoT. Neste guia mostramos como conectar um módulo RFM95 a um ESP32 e como programar um transmissor e um receptor usando a Arduino IDE.</p>
+      <figure><img src="img/lora-semtech-radio-modulation.png" alt="ESP32 com LoRa"><figcaption></figcaption></figure>
+    </section>
+    
+    <section id="intro">
+      <p>
+        Esta técnica de modulação permite a comunicação de
+        longo alcance de pequenas quantidades de dados (o que
+        significa baixa largura de banda), alta imunidade a
+        interferências e minimiza o consumo de energia. Assim,
+        permite comunicação de longa distância com baixos
+        requisitos de energia.
+      </p>
+      <figure><img src="img\LoRa-intro.png" alt="ESP32 com LoRa"><figcaption></figcaption></figure>
+    </section>
+
+    <section id="components">
+      <h2>Componentes Utilizados</h2>
+      <ul>
+        <li>2x ESP32 DOIT DEVKIT V1 </li>
+        <li>2x Módulo LoRa RFM95 (adequado para a frequência da sua região)</li>
+        <li>Cabos jumper, breadboard ou stripboard</li>
+        <li>Antena apropriada para o módulo (importante!)</li>
+        <li>Computador com Arduino IDE configurado para ESP32</li>
+      </ul>
+    </section>
+
+    <section id="frequencies">
+      <h2>Frequências e antena</h2>
+      <p>As bandas LoRa mais comuns são 868 MHz (Europa), 915 MHz (América do Norte) e 433 MHz (Ásia). Verifique as regras locais antes de operar e ajuste a antena ao comprimento correto para a frequência escolhida.</p>
+    </section>
+
+    <section id="wiring">
+      <h2>Ligação (Wiring)</h2>
+      <p>O RFM95 usa SPI para comunicação. Abaixo está a correspondência típica de pinos entre ESP32 e RFM95 (exemplo):</p>
+      <table>
+        <thead><tr><th>Módulo RFM95</th><th>ESP32 (exemplo)</th></tr></thead>
+        <tbody>
+          <tr><td>ANA (antena)</td><td>Conectar antena (obrigatório)</td></tr>
+          <tr><td>3.3V</td><td>3.3V</td></tr>
+          <tr><td>GND</td><td>GND</td></tr>
+          <tr><td>NSS (CS)</td><td>GPIO 5</td></tr>
+          <tr><td>SCK</td><td>GPIO 18</td></tr>
+          <tr><td>MOSI</td><td>GPIO 23</td></tr>
+          <tr><td>MISO</td><td>GPIO 19</td></tr>
+          <tr><td>RESET</td><td>GPIO 14</td></tr>
+          <tr><td>DIO0</td><td>GPIO 2</td></tr>
+        </tbody>
+      </table>      
+    </section>
+
+    <section>
+     <figure><img src="img/LoRa_ESP32_Wiring.png" class="img-pequena" alt="Diagrama de ligação"></figure>
+    </section>
+
+    <section id="code">
+      <h2>Exemplo de código (Sender)</h2>
+      <p>Abaixo, um sketch de exemplo (simplificado) que transmite uma mensagem "hello" com um contador. Use a biblioteca <code>LoRa</code> de Sandeep Mistry.</p>
+      <pre><code>// Sender (ESP32) - exemplo simplificado
+#include &lt;SPI.h&gt;
+#include &lt;LoRa.h&gt;
+
+#define ss 5
+#define rst 14
+#define dio0 2
+
+int counter = 0;
+
+void setup() {
+  Serial.begin(115200);
+  while(!Serial);
+  Serial.println("LoRa Sender");
+  LoRa.setPins(ss, rst, dio0);
+  if (!LoRa.begin(868E6)) { // ajuste para sua frequência
+    Serial.println("Falha ao inicializar LoRa");
+    while (1) { delay(1000); }
+  }
+}
+
+void loop() {
+  LoRa.beginPacket();
+  LoRa.print("hello ");
+  LoRa.print(counter++);
+  LoRa.endPacket();
+  delay(10000); // enviar a cada 10s
+}
+</code></pre>
+      <p>Substitua a frequência (868E6, 915E6, etc.) conforme a sua região.</p>
+    </section>
+
+    <section id="receiver">
+      <h2>Exemplo de código (Receiver)</h2>
+      <p>O receptor inicializa o rádio na mesma frequência e imprime mensagens recebidas no Serial Monitor. A lógica é parecida com o exemplo do Sender — apenas utilize <code>LoRa.parsePacket()</code> e <code>LoRa.readString()</code> para ler os dados.</p>
+    </section>
+
+    <section id="notes">
+      <h2>Dicas práticas</h2>
+      <ul>
+        <li>Sempre use antena; sem ela o alcance cai drasticamente.</li>
+        <li>Verifique a alimentação: forneça corrente estável a 3.3V.</li>
+        <li>Se usar módulos RFM95 sem breakout, considere soldar fios ou usar um breakout compatível.</li>
+        <li>Teste a comunicação com o Arduino Serial Monitor para diagnosticar problemas.</li>
+      </ul>
+    </section>
+
+    <section id="images-replacement">
+      <figure><img src="img/projeto.jpeg" alt="Diagrama de ligação"><figcaption></figcaption></figure>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Desenvolvido por Robenilson Santos e Vanessa Costa. &copy; 2025</p>
+    </div>
+  </footer>
+</body>
+</html>

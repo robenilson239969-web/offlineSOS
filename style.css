@@ -1,0 +1,188 @@
+/* ======== Reset e Variáveis ======== */
+:root {
+  --bg: #f4f7fb;
+  --card: #ffffff;
+  --accent: #0072e5;
+  --accent-light: #e8f1ff;
+  --text: #0f172a;
+  --muted: #6b7280;
+  --radius: 14px;
+  --shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ======== Cabeçalho ======== */
+.site-header {
+  background: linear-gradient(120deg, var(--accent), #00b0ff);
+  color: #fff;
+  padding: 60px 0;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.site-header h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.tagline {
+  font-size: 1.05rem;
+  opacity: 0.9;
+}
+
+/* ======== Layout Geral ======== */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+main {
+  margin-top: 24px;
+}
+
+section {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+}
+
+h2 {
+  color: var(--accent);
+  margin-bottom: 12px;
+  border-left: 4px solid var(--accent);
+  padding-left: 10px;
+  font-size: 1.4rem;
+}
+
+/* ======== Tabelas ======== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 0.95rem;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #e3e8ef;
+}
+
+th {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ======== Imagens e Figuras ======== */
+figure {
+  margin: 18px 0;
+  text-align: center;
+}
+
+figure img {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+figure img:hover {
+  transform: scale(1.03);
+}
+
+/* ======== Código ======== */
+pre {
+  background: #0f172a;
+  color: #e6eef8;
+  padding: 16px;
+  border-radius: 10px;
+  overflow-x: auto;
+  margin-top: 16px;
+  font-size: 0.95rem;
+}
+
+code {
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* ======== Listas ======== */
+ul, ol {
+  margin-top: 12px;
+  padding-left: 24px;
+}
+
+li {
+  margin-bottom: 6px;
+}
+
+/* ======== Links ======== */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #005ac1;
+  text-decoration: underline;
+}
+
+/* ======== Rodapé ======== */
+.site-footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 24px 0;
+  margin-top: 40px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+/* ======== Responsividade ======== */
+@media (max-width: 640px) {
+  .site-header h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  section {
+    padding: 20px;
+  }
+
+  pre {
+    font-size: 0.85rem;
+  }
+}
+
+.img-pequena {
+  max-width: 50%;
+  margin: 0 auto;
+  display: block;
+}
